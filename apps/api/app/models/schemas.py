@@ -43,9 +43,30 @@ class LegalRequestItem(BaseModel):
     business_unit: str
     description: str
     status: RequestStatus
+    created_by_user_id: str
     created_at: datetime
+    updated_at: datetime
 
 
 class LegalRequestListResponse(BaseModel):
     items: list[LegalRequestItem]
     total: int
+
+
+class LoginPayload(BaseModel):
+    email: str = Field(min_length=5, max_length=255)
+    password: str = Field(min_length=8, max_length=255)
+
+
+class CurrentUserResponse(BaseModel):
+    id: str
+    email: str
+    full_name: str
+    role: UserRole
+    created_at: datetime
+
+
+class AuthTokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: CurrentUserResponse
