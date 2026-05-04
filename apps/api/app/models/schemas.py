@@ -44,12 +44,36 @@ class LegalRequestItem(BaseModel):
     description: str
     status: RequestStatus
     created_by_user_id: str
+    created_by_user_name: str | None = None
+    assigned_to_user_id: str | None = None
+    assigned_to_user_name: str | None = None
+    assigned_at: datetime | None = None
     created_at: datetime
     updated_at: datetime
 
 
 class LegalRequestListResponse(BaseModel):
     items: list[LegalRequestItem]
+    total: int
+
+
+class AssignLegalRequestPayload(BaseModel):
+    assignee_user_id: str
+
+
+class UpdateLegalRequestStatusPayload(BaseModel):
+    status: RequestStatus
+
+
+class QueueSummaryItem(BaseModel):
+    key: str
+    label: str
+    count: int
+
+
+class LegalQueueResponse(BaseModel):
+    items: list[LegalRequestItem]
+    summary: list[QueueSummaryItem]
     total: int
 
 
