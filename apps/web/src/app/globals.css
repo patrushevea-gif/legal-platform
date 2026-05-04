@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(180, 207, 228, 0.45), transparent 28%),
+    linear-gradient(180deg, #f2f7fb 0%, #e8f0f6 100%);
+  color: #102033;
+  font-family: "Segoe UI", "Arial Nova", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
