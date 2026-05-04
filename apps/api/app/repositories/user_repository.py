@@ -28,3 +28,11 @@ class UserRepository:
             User.role.in_([UserRole.LEGAL_COUNSEL, UserRole.SENIOR_LEGAL_COUNSEL]),
         )
         return self.session.scalar(statement)
+
+    def list_legal_team(self) -> list[User]:
+        statement = (
+            select(User)
+            .where(User.role.in_([UserRole.LEGAL_COUNSEL, UserRole.SENIOR_LEGAL_COUNSEL]))
+            .order_by(User.full_name.asc())
+        )
+        return list(self.session.scalars(statement))

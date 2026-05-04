@@ -94,3 +94,10 @@ class AuthTokenResponse(BaseModel):
     access_token: str
     token_type: str
     user: CurrentUserResponse
+
+
+class LegalTeamMemberResponse(BaseModel):
+    id: str
+    email: str
+    full_name: str
+    role: UserRole
