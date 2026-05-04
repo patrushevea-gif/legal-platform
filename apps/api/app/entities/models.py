@@ -61,6 +61,10 @@ class User(Base):
     legal_requests: Mapped[list["LegalRequest"]] = relationship(
         back_populates="created_by_user"
     )
+    assigned_legal_requests: Mapped[list["LegalRequest"]] = relationship(
+        back_populates="assigned_to_user",
+        foreign_keys="LegalRequest.assigned_to_user_id",
+    )
 
 
 class LegalRequest(Base):
@@ -85,6 +89,16 @@ class LegalRequest(Base):
         ForeignKey("users.id"),
         index=True,
     )
+    assigned_to_user_id: Mapped[str | None] = mapped_column(
+        String(36),
+        ForeignKey("users.id"),
+        index=True,
+        nullable=True,
+    )
+    assigned_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(UTC),
@@ -96,3 +110,7 @@ class LegalRequest(Base):
     )
 
     created_by_user: Mapped[User] = relationship(back_populates="legal_requests")
+    assigned_to_user: Mapped[User | None] = relationship(
+        back_populates="assigned_legal_requests",
+        foreign_keys=[assigned_to_user_id],
+    )

@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.entities.models import User
+from app.entities.models import User, UserRole
 
 
 class UserRepository:
@@ -21,3 +21,10 @@ class UserRepository:
         self.session.commit()
         self.session.refresh(user)
         return user
+
+    def get_legal_assignee(self, user_id: str) -> User | None:
+        statement = select(User).where(
+            User.id == user_id,
+            User.role.in_([UserRole.LEGAL_COUNSEL, UserRole.SENIOR_LEGAL_COUNSEL]),
+        )
+        return self.session.scalar(statement)
