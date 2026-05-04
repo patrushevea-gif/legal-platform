@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 
 from app.api.v1.router import api_router
+from app.db import Base, engine, SessionLocal
+from app.seed import seed_demo_users
 
 
 app = FastAPI(
@@ -10,6 +12,13 @@ app = FastAPI(
 )
 
 app.include_router(api_router, prefix="/api/v1")
+
+
+@app.on_event("startup")
+def startup() -> None:
+    Base.metadata.create_all(bind=engine)
+    with SessionLocal() as session:
+        seed_demo_users(session)
 
 
 @app.get("/", tags=["meta"])
